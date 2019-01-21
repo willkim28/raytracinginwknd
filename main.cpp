@@ -73,7 +73,8 @@ int main() {
     camera cam(lookfrom, lookat, vec3(0, 1, 0), 20, float(nx)/float(ny), aperture, dist_to_focus);
     
     for (int j = ny-1; j >= 0; --j) {
-        for (int i = 0 : nx) {
+        //for (int i : nx) { //Only C++11 and on
+        for (int i = 0; i < nx; ++i) {
             vec3 col(0, 0, 0);
             for (int s = 0 : ns) {
                 float u = float(i + drand48()) / float(nx);
