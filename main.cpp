@@ -1,5 +1,5 @@
 #include <iostream>
-#include <values.h> //Peter Shirley uses "values.h?"
+#include <cfloat> //Peter Shirley uses C-library float.h
 #include "sphere.h"
 #include "hitable_list.h"
 #include "camera.h"
@@ -59,7 +59,7 @@ int main() {
     float R = cos(M_PI/4);
     list[0] = new sphere(vec3(0, 0, -1), 0.5, new lambertian(vec3(0.1, 0.2, 0.5)));
     list[1] = new sphere(vec3(0, -100.5, -1), 100, new lambertian(vec3(0.8, 0.8, 0.0)));
-    list[2] = new sphere(vec3(1, 0, -1), 0.5, new metal(vec3(0.8, 0.6, 0.2)));
+    list[2] = new sphere(vec3(1, 0, -1), 0.5, new metal(vec3(0.8, 0.6, 0.2), 0.0));
     list[3] = new sphere(vec3(-1, 0, -1), 0.5, new dielectric(1.5));
     list[4] = new sphere(vec3(-1, 0, -1), -0.45, new dielectric(1.5));
     hitable *world = new hitable_list(list, 4);
@@ -76,12 +76,13 @@ int main() {
         //for (int i : nx) { //Only C++11 and on
         for (int i = 0; i < nx; ++i) {
             vec3 col(0, 0, 0);
-            for (int s = 0 : ns) {
+            //for (int s = 0 : ns) { // ditto as above
+            for (int s=0; s<ns; s++) {
                 float u = float(i + drand48()) / float(nx);
                 float v = float(j + drand48()) / float(ny);
                 ray r = cam.get_ray(u, v);
                 vec3 p = r.point_at_parameter(2.0);
-                col += color(r, world);
+                col += color(r, world, 0);
             }
             col /= float(ns);
             col = vec3(sqrt(col[0]), sqrt(col[1]), sqrt(col[2]));
